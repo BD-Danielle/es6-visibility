@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <script src="./js/es6.visibility.js"></script>
+  <title>es6.Visibility</title>
+</head>
+<style>
+  html{
+    scroll-behavior: smooth;
+  }
+  div{
+    margin: 0;
+    box-sizing: border-box;
+  }
+  ul > li{
+    width: 25%; height: 40px; background-color: grey; text-align: center;
+    line-height: 40px; cursor: pointer;
+  }
+  ul > li > a{
+    text-decoration: none; color: white;
+  }
+  #g{
+    width: 100%; height: 60px; position: fixed;  bottom: 0; background-color: pink;
+    display: flex; justify-content: center; align-items: center;
+  }
+  #f{
+    width: 150px; height: 150px; position: fixed; right: 0; top: 20%; background-color: darkseagreen;
+    text-align: center; line-height: 150px; color: white;
+  }
+</style>
+<body>
+  <div id="f">我是右側浮水印</div>
+  <div id="begin7" style="width: 720px; display: block; margin: 0 auto;">
+    <ul style="width: inherit; display: flex; position: fixed; top: 0; z-index: 2;">
+      <li id="a" style="background-color: red;"><a href="">A標籤</a></li>
+      <li id="b"><a href="">B標籤</a></li>
+      <li id="c"><a href="">C標籤</a></li>
+      <li id="d"><a href="">D標籤</a></li>
+      <li id="e"><a href="">E標籤</a></li>
+    </ul>
+    <div style="width: inherit;">
+      <div id="begin1" style="margin-top: 40px; height: 650px; background-color: red;">begin1
+        <img loading="lazy" src="./images/19-200x300.jpg"/>
+        <img loading="lazy" src="./images/203-200x300.jpg"/>
+        <img loading="lazy" src="./images/241-200x300.jpg"/>
+        <img loading="lazy" src="./images/265-200x300.jpg"/>
+        <img loading="lazy" src="./images/271-200x300.jpg"/>
+        <img loading="lazy" src="./images/273-200x300.jpg"/>
+      </div><div id="end1"></div>
+      <div id="begin2" style="height: 700px; background-color: orange;">begin2
+        <img loading="lazy" src="./images/334-200x300.jpg"/>
+        <img loading="lazy" src="./images/409-200x300.jpg"/>
+        <img loading="lazy" src="./images/410-200x300.jpg"/>
+        <img loading="lazy" src="./images/44-200x300.jpg"/>
+        <img loading="lazy" src="./images/444-200x300.jpg"/>
+        <img loading="lazy" src="./images/448-200x300.jpg"/>
+      </div><div id="end2"></div>
+      <div id="begin3" style="height: 750px; background-color: yellow;">begin3
+        <img loading="lazy" src="./images/471-200x300.jpg"/>
+        <img loading="lazy" src="./images/474-200x300.jpg"/>
+        <img loading="lazy" src="./images/515-200x300.jpg"/>
+        <img loading="lazy" src="./images/533-200x300.jpg"/>
+        <img loading="lazy" src="./images/548-200x300.jpg"/>
+      </div><div id="end3"></div>
+      <div id="begin4" style="height: 800px; background-color: green;">begin4
+        <img loading="lazy" src="./images/582-200x300.jpg"/>
+        <img loading="lazy" src="./images/605-200x300.jpg"/>
+        <img loading="lazy" src="./images/612-200x300.jpg"/>
+        <img loading="lazy" src="./images/615-200x300.jpg"/>
+        <img loading="lazy" src="./images/62-200x300.jpg"/>
+        <img loading="lazy" src="./images/640-200x300.jpg"/>
+      </div><div id="end4"></div>
+      <div id="begin5" style="height: 850px; background-color: blue;">begin5
+        <img loading="lazy" src="./images/663-200x300.jpg"/>
+        <img loading="lazy" src="./images/704-200x300.jpg"/>
+        <img loading="lazy" src="./images/764-200x300.jpg"/>
+        <img loading="lazy" src="./images/769-200x300.jpg"/>
+        <img loading="lazy" src="./images/77-200x300.jpg"/>
+        <img loading="lazy" src="./images/786-200x300.jpg"/>
+      </div><div id="end5"></div>
+      <div id="begin6" style="height: 850px; background-color: purple;">begin6
+        <img loading="lazy" src="./images/901-200x300.jpg"/>
+        <img loading="lazy" src="./images/912-200x300.jpg"/>
+        <img loading="lazy" src="./images/947-200x300.jpg"/>
+        <img loading="lazy" src="./images/959-200x300.jpg"/>
+        <img loading="lazy" src="./images/962-200x300.jpg"/>
+        <img loading="lazy" src="./images/982-200x300.jpg"/>
+      </div><div id="end6"></div>
+      <div id="begin7" style="height: 250px; background-color: #deddde;"></div>
+    </div>
+  </div>
+  <div id="g" style="display: none;">我是置底浮水印</div>
+</body>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    var displayButton = function(){
+      this.visible ? document.querySelector("#g").style.display = "flex": document.querySelector("#g").style.display = "none";
+    }
+    var changeBgColor = function(){
+      this.visible ? document.querySelector(this.selector).style.backgroundColor = this.backgroundColor: document.querySelector(this.selector).style.backgroundColor = "grey";
+    }
+    var toggleWatermark = function(){
+      this.horizonVisible ? document.querySelector(this.selector).style.visibility = "visible": document.querySelector(this.selector).style.visibility = "hidden";
+    }
+    var arrObjs = [
+      {areas: [['#begin1', '#end1']], selector: '#a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
+      {areas: [['#begin2', '#end2']], selector: '#b', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "orange"},
+      {areas: [['#begin3', '#end3']], selector: '#c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
+      {areas: [['#begin4', '#end4']], selector: '#d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
+      {areas: [['#begin5', '#end5']], selector: '#e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
+      {areas: [['#begin6', '#end6']], selector: '#e', offsetExtra: 40.1, callback: displayButton, peekaboo: true},
+      {areas: [['#begin7', "#f"]], selector: '#f', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
+    ];
+    var visibility = new Visibility(arrObjs);
+    visibility.start();
+    visibility.click(arrObjs.filter((c)=>c.selector!=="#f"));
+  })
+</script>
+</html>
