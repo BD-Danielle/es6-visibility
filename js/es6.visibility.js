@@ -1,6 +1,6 @@
 /*
  * ========================================================================
- * Visibility 1.0
+ * Visibility 1.1
  * The target was hidden or shown when window scroll to the specified area
  * YILING CHEN
  * Copyright 2023, MIT License
@@ -42,6 +42,7 @@ class Visibility{
   }
   
   getObjSize(node){
+    if(!node) return;
     let offsetLeft = 0, offsetTop = 0;
     var node = document.querySelector(node);
     let offsetHeight = node.offsetHeight, offsetWidth = node.offsetWidth;
@@ -64,7 +65,7 @@ class Visibility{
     let offsetTop = c ? this.getObjSize(c).offsetHeight + offsetExtra ? offsetExtra: 0: 0;
     let pointA = this.getObjSize(c1[0]).offsetTop - offsetTop;
     let pointB = this.docSize.docHeight - this.getObjSize(c1[1]).offsetTop + offsetTop - this.getObjSize(c1[1]).offsetHeight;
-    return this.docSize.docScrollTop >= pointA && pointB <= (peekaboo ? this.docSize.docScrollBottom - this.winSize.innerHeight: this.docSize.docScrollBottom);
+    return this.docSize.docScrollTop + (peekaboo ? offsetExtra: 0) >= pointA && pointB <= (peekaboo ? this.docSize.docScrollBottom - this.winSize.innerHeight: this.docSize.docScrollBottom);
   }
   forEach(){
     this.arrObjs.forEach(c=>{
@@ -90,6 +91,7 @@ class Visibility{
   click(args){
     if(Object.prototype.toString.call(args) !== "[object Array]") return;
     [...args].forEach(c=>{
+      if(!c.selector) return;
       let selector = document.querySelector(c.selector);
       let offsetTop = this.getObjSize(c.areas[0][0]).offsetTop;
       let offsetExtra = c.offsetExtra ? c.offsetExtra: 0;

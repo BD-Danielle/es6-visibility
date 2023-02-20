@@ -112,12 +112,12 @@
       {areas: [['#begin3', '#end3']], selector: '#c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
       {areas: [['#begin4', '#end4']], selector: '#d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
       {areas: [['#begin5', '#end5']], selector: '#e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
-      {areas: [['#begin6', '#end6']], selector: '#e', offsetExtra: 40.1, callback: displayButton, peekaboo: true},
+      {areas: [['#begin6', '#end6']], offsetExtra: 40.1, callback: displayButton, peekaboo: true},
       {areas: [['#begin7', "#f"]], selector: '#f', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
     var visibility = new Visibility(arrObjs);
     visibility.start();
-    visibility.click(arrObjs.filter((c)=>c.selector!=="#f"));
+    visibility.click(arrObjs.filter((c)=>!c.selector && c.selector!=="#f"));
   })
 </script>
 </html>
