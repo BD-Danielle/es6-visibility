@@ -117,7 +117,7 @@
     ];
     var visibility = new Visibility(arrObjs);
     visibility.start();
-    visibility.click(arrObjs.filter((c)=>!c.selector && c.selector!=="#f"));
+    visibility.click(arrObjs.filter((c)=>!!c.selector && c.selector!=="#f"));
   })
 </script>
 </html>
