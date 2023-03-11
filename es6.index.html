@@ -104,7 +104,7 @@
       this.visible ? document.querySelector(this.selector).style.backgroundColor = this.backgroundColor: document.querySelector(this.selector).style.backgroundColor = "grey";
     }
     var toggleWatermark = function(){
-      this.horizonVisible ? document.querySelector(this.selector).style.visibility = "visible": document.querySelector(this.selector).style.visibility = "hidden";
+      this.horizVisible ? document.querySelector(this.selector).style.visibility = "visible": document.querySelector(this.selector).style.visibility = "hidden";
     }
     var arrObjs = [
       {areas: [['#begin1', '#end1']], selector: '#a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},

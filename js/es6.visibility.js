@@ -81,7 +81,7 @@ class Visibility{
         }
       })
       if (c.areas.length >= c.arrVisible.length && c.arrVisible.some(c2=>c2==true)) c.visible = true;
-      //if (c.areas.length >= c.arrVisible.length && c.arrVisible.every(c2=>c2==false)) c.visible = false;
+      if (c.areas.length >= c.arrVisible.length && c.arrVisible.every(c2=>c2==false)) c.visible = false;
       c.callback && c.callback();
     })
   }
@@ -90,7 +90,7 @@ class Visibility{
   }
   click(args){
     if(Object.prototype.toString.call(args) !== "[object Array]") return;
-    [...args].forEach(c=>{
+    args.forEach(c=>{
       if(!c.selector) return;
       let selector = document.querySelector(c.selector);
       let offsetTop = this.getObjSize(c.areas[0][0]).offsetTop;
