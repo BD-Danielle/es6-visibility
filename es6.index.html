@@ -96,15 +96,19 @@
   <div id="g" style="display: none;">我是置底浮水印</div>
 </body>
 <script>
-  window.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     var displayButton = function(){
-      this.visible ? document.querySelector("#g").style.display = "flex": document.querySelector("#g").style.display = "none";
+      this.visible ? this.qSelector.style.display = "flex": this.qSelector.style.display = "none";
+    }
+    
+    var toggleWatermark = function(){
+      this.horizVisible ? this.qSelector.style.visibility = "visible": this.qSelector.style.visibility = "hidden";
     }
     var changeBgColor = function(){
-      this.visible ? document.querySelector(this.selector).style.backgroundColor = this.backgroundColor: document.querySelector(this.selector).style.backgroundColor = "grey";
+      this.visible ? this.qSelector.style.backgroundColor = this.backgroundColor: this.qSelector.style.backgroundColor = "grey";
     }
-    var toggleWatermark = function(){
-      this.horizVisible ? document.querySelector(this.selector).style.visibility = "visible": document.querySelector(this.selector).style.visibility = "hidden";
+    var scrollTo = function(self){
+      window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
     var arrObjs = [
       {areas: [['#begin1', '#end1']], selector: '#a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
@@ -112,12 +116,12 @@
       {areas: [['#begin3', '#end3']], selector: '#c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
       {areas: [['#begin4', '#end4']], selector: '#d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
       {areas: [['#begin5', '#end5']], selector: '#e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
-      {areas: [['#begin6', '#end6']], offsetExtra: 40.1, callback: displayButton, peekaboo: true},
+      {areas: [['#begin6', '#end6']], selector: '#g', offsetExtra: 40.1, callback: changeBgColor, callback: displayButton, peekaboo: true},
       {areas: [['#begin7', "#f"]], selector: '#f', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
     var visibility = new Visibility(arrObjs);
     visibility.start();
-    visibility.click(arrObjs.filter((c)=>!!c.selector && c.selector!=="#f"));
+    visibility.event("click", c=>!!c.selector && c.selector!=="#f" && c.selector!=="#g", scrollTo);
   })
 </script>
 </html>

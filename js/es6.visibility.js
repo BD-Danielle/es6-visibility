@@ -1,6 +1,6 @@
 /*
  * ========================================================================
- * Visibility 1.0.2
+ * Visibility 1.0.3
  * The target was hidden or shown when window scroll to the specified area
  * YILING CHEN
  * Copyright 2023, MIT License
@@ -70,6 +70,9 @@ class Visibility{
   forEach(){
     this.arrObjs.forEach(c=>{
       c.arrVisible = [];
+      c.qSelector = document.querySelector(c.selector);
+      c.visible = false;
+      c.offsetTop = this.getObjSize(c.areas[0][0]).offsetTop;
       c.areas.forEach((c1, i1)=>{
         c.horizVisible = c.horizontal && this.isHorizontal(c1) ? false: true; // if horizontal
         if(this.isVertical(c1, c.selector, c.offsetExtra, c.peekaboo)){
@@ -88,17 +91,15 @@ class Visibility{
   start(){
     ["DOMContentLoaded", "scroll", "resize"].forEach(c=>window.addEventListener(c, ()=>this.forEach()));
   }
-  click(args){
-    if(Object.prototype.toString.call(args) !== "[object Array]") return;
-    args.forEach(c=>{
-      if(!c.selector) return;
-      let selector = document.querySelector(c.selector);
-      let offsetTop = this.getObjSize(c.areas[0][0]).offsetTop;
-      let offsetExtra = c.offsetExtra ? c.offsetExtra: 0;
-      selector.addEventListener("click", function(event){
-        event.preventDefault();
-        window.scrollTo(0, offsetTop - offsetExtra);
+  event(listener, condition, callback){
+    if(Object.prototype.toString.call(this.arrObjs) !== "[object Array]") return;
+    setTimeout(()=>{
+      this.arrObjs.filter(condition).forEach(c1=>{
+        c1.qSelector && c1.qSelector.addEventListener(listener, function(event){
+          event.preventDefault();
+          callback && callback.call(null, c1);
+        })
       })
-    })
+    }, 100)
   }
 }
