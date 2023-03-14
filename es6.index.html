@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="./css/reset.css">
   <script src="./js/es6.visibility.js"></script>
   <title>es6.Visibility</title>
 </head>
@@ -16,91 +17,146 @@
     margin: 0;
     box-sizing: border-box;
   }
-  ul > li{
-    width: 25%; height: 40px; background-color: grey; text-align: center;
+  .tab{
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .arrow{
+    position: fixed;
+    width: 100%;
+    max-width: 8%;
+    height: 40px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 39px;
+    background: black;
+    z-index: 3;
+    text-align: center;
+    top: 0;
+    cursor: pointer;
+  }
+  .right{
+    right: 0;
+  }
+  .left{
+    left: 0;
+  }
+  #tab-slider::-webkit-scrollbar {
+    display: none;
+  }
+  #tab-slider{
+    width: 85%;
+    height: 40px;
+    max-width: 85%;
+    position: fixed;
+    background-color: gray;
+    top: 0;
+    z-index: 2;
+    display: block;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  #tab-slider > li{
+    width: 33.33%;
+    max-width: 100%; 
+    display: inline-block;
+    height: 40px; background-color: grey; text-align: center;
     line-height: 40px; cursor: pointer;
   }
-  ul > li > a{
+  .tab a{
+    display: block;
+    height: inherit;
     text-decoration: none; color: white;
   }
   #g{
-    width: 100%; height: 60px; position: fixed;  bottom: 0; background-color: pink;
+    max-width: 100%; height: 60px; position: fixed;  bottom: 0; background-color: pink;
     display: flex; justify-content: center; align-items: center;
   }
   #f{
-    width: 150px; height: 150px; position: fixed; right: 0; top: 20%; background-color: darkseagreen;
+    max-width: 150px; height: 150px; position: fixed; right: 0; top: 20%; background-color: darkseagreen;
     text-align: center; line-height: 150px; color: white;
   }
 </style>
 <body>
-  <div id="f">我是右側浮水印</div>
-  <div id="begin7" style="width: 720px; display: block; margin: 0 auto;">
-    <ul style="width: inherit; display: flex; position: fixed; top: 0; z-index: 2;">
-      <li id="a" style="background-color: red;"><a href="">A標籤</a></li>
-      <li id="b"><a href="">B標籤</a></li>
-      <li id="c"><a href="">C標籤</a></li>
-      <li id="d"><a href="">D標籤</a></li>
-      <li id="e"><a href="">E標籤</a></li>
-    </ul>
-    <div style="width: inherit;">
-      <div id="begin1" style="margin-top: 40px; height: 650px; background-color: red;">begin1
-        <img loading="lazy" src="./images/19-200x300.jpg"/>
-        <img loading="lazy" src="./images/203-200x300.jpg"/>
-        <img loading="lazy" src="./images/241-200x300.jpg"/>
-        <img loading="lazy" src="./images/265-200x300.jpg"/>
-        <img loading="lazy" src="./images/271-200x300.jpg"/>
-        <img loading="lazy" src="./images/273-200x300.jpg"/>
-      </div><div id="end1"></div>
-      <div id="begin2" style="height: 700px; background-color: orange;">begin2
-        <img loading="lazy" src="./images/334-200x300.jpg"/>
-        <img loading="lazy" src="./images/409-200x300.jpg"/>
-        <img loading="lazy" src="./images/410-200x300.jpg"/>
-        <img loading="lazy" src="./images/44-200x300.jpg"/>
-        <img loading="lazy" src="./images/444-200x300.jpg"/>
-        <img loading="lazy" src="./images/448-200x300.jpg"/>
-      </div><div id="end2"></div>
-      <div id="begin3" style="height: 750px; background-color: yellow;">begin3
-        <img loading="lazy" src="./images/471-200x300.jpg"/>
-        <img loading="lazy" src="./images/474-200x300.jpg"/>
-        <img loading="lazy" src="./images/515-200x300.jpg"/>
-        <img loading="lazy" src="./images/533-200x300.jpg"/>
-        <img loading="lazy" src="./images/548-200x300.jpg"/>
-      </div><div id="end3"></div>
-      <div id="begin4" style="height: 800px; background-color: green;">begin4
-        <img loading="lazy" src="./images/582-200x300.jpg"/>
-        <img loading="lazy" src="./images/605-200x300.jpg"/>
-        <img loading="lazy" src="./images/612-200x300.jpg"/>
-        <img loading="lazy" src="./images/615-200x300.jpg"/>
-        <img loading="lazy" src="./images/62-200x300.jpg"/>
-        <img loading="lazy" src="./images/640-200x300.jpg"/>
-      </div><div id="end4"></div>
-      <div id="begin5" style="height: 850px; background-color: blue;">begin5
-        <img loading="lazy" src="./images/663-200x300.jpg"/>
-        <img loading="lazy" src="./images/704-200x300.jpg"/>
-        <img loading="lazy" src="./images/764-200x300.jpg"/>
-        <img loading="lazy" src="./images/769-200x300.jpg"/>
-        <img loading="lazy" src="./images/77-200x300.jpg"/>
-        <img loading="lazy" src="./images/786-200x300.jpg"/>
-      </div><div id="end5"></div>
-      <div id="begin6" style="height: 850px; background-color: purple;">begin6
-        <img loading="lazy" src="./images/901-200x300.jpg"/>
-        <img loading="lazy" src="./images/912-200x300.jpg"/>
-        <img loading="lazy" src="./images/947-200x300.jpg"/>
-        <img loading="lazy" src="./images/959-200x300.jpg"/>
-        <img loading="lazy" src="./images/962-200x300.jpg"/>
-        <img loading="lazy" src="./images/982-200x300.jpg"/>
-      </div><div id="end6"></div>
-      <div id="begin7" style="height: 250px; background-color: #deddde;"></div>
+  <div id="right-watermark">我是右側浮水印</div>
+  <div id="wrapper" style="width: 100%; max-width: 720px; display: block; margin: 0 auto;">
+    <div class="tab">
+      <div class="left arrow"><a id="tab-left-arrow" href="">&#60;</a></div>
+      <ul id="tab-slider">
+        <li style="background-color: red;"><a id="tab-a" href="">A標籤</a></li>
+        <li><a id="tab-b" href="">B標籤</a></li>
+        <li><a id="tab-c" href="">C標籤</a></li>
+        <li><a id="tab-d" href="">D標籤</a></li>
+        <li><a id="tab-e" href="">E標籤</a></li>
+      </ul>
+      <div class="right arrow"><a id="tab-right-arrow" href="">&#62;</a></div>
+    </div>
+    <div style="max-width: 720px;">
+      <div id="a-block" style="margin-top: 24px; height: 650px; background-color: red;">a-block
+        <img src="./images/19-200x300.jpg"/>
+        <img src="./images/203-200x300.jpg"/>
+        <img src="./images/241-200x300.jpg"/>
+        <img src="./images/265-200x300.jpg"/>
+        <img src="./images/271-200x300.jpg"/>
+        <img src="./images/273-200x300.jpg"/>
+      </div><div id="a-block-end"></div>
+      <div id="b-block" style="height: 700px; background-color: orange;">b-block
+        <img src="./images/334-200x300.jpg"/>
+        <img src="./images/409-200x300.jpg"/>
+        <img src="./images/410-200x300.jpg"/>
+        <img src="./images/44-200x300.jpg"/>
+        <img src="./images/444-200x300.jpg"/>
+        <img src="./images/448-200x300.jpg"/>
+      </div><div id="b-block-end"></div>
+      <div id="c-block" style="height: 750px; background-color: yellow;">c-block
+        <img src="./images/471-200x300.jpg"/>
+        <img src="./images/474-200x300.jpg"/>
+        <img src="./images/515-200x300.jpg"/>
+        <img src="./images/533-200x300.jpg"/>
+        <img src="./images/548-200x300.jpg"/>
+      </div><div id="c-block-end"></div>
+      <div id="d-block" style="height: 800px; background-color: green;">d-block
+        <img src="./images/582-200x300.jpg"/>
+        <img src="./images/605-200x300.jpg"/>
+        <img src="./images/612-200x300.jpg"/>
+        <img src="./images/615-200x300.jpg"/>
+        <img src="./images/62-200x300.jpg"/>
+        <img src="./images/640-200x300.jpg"/>
+      </div><div id="d-block-end"></div>
+      <div id="e-block" style="height: 850px; background-color: blue;">e-block
+        <img src="./images/663-200x300.jpg"/>
+        <img src="./images/704-200x300.jpg"/>
+        <img src="./images/764-200x300.jpg"/>
+        <img src="./images/769-200x300.jpg"/>
+        <img src="./images/77-200x300.jpg"/>
+        <img src="./images/786-200x300.jpg"/>
+      </div><div id="e-block-end"></div>
+      <div id="f-block" style="height: 850px; background-color: purple;">f-block
+        <img src="./images/901-200x300.jpg"/>
+        <img src="./images/912-200x300.jpg"/>
+        <img src="./images/947-200x300.jpg"/>
+        <img src="./images/959-200x300.jpg"/>
+        <img src="./images/962-200x300.jpg"/>
+        <img src="./images/982-200x300.jpg"/>
+      </div><div id="f-block-end"></div>
+      <div id="wrapper" style="height: 250px; background-color: #deddde;"></div>
     </div>
   </div>
-  <div id="g" style="display: none;">我是置底浮水印</div>
+  <div id="bottom-watermark" style="display: none;">我是置底浮水印</div>
 </body>
-<script>
+<script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     var displayButton = function(){
       this.visible ? this.qSelector.style.display = "flex": this.qSelector.style.display = "none";
     }
-    
     var toggleWatermark = function(){
       this.horizVisible ? this.qSelector.style.visibility = "visible": this.qSelector.style.visibility = "hidden";
     }
@@ -110,18 +166,24 @@
     var scrollTo = function(self){
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
+    var scrollToLeft = function(self){
+      console.log('self: ', self);
+    }
     var arrObjs = [
-      {areas: [['#begin1', '#end1']], selector: '#a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
-      {areas: [['#begin2', '#end2']], selector: '#b', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "orange"},
-      {areas: [['#begin3', '#end3']], selector: '#c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
-      {areas: [['#begin4', '#end4']], selector: '#d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
-      {areas: [['#begin5', '#end5']], selector: '#e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
-      {areas: [['#begin6', '#end6']], selector: '#g', offsetExtra: 40.1, callback: changeBgColor, callback: displayButton, peekaboo: true},
-      {areas: [['#begin7', "#f"]], selector: '#f', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1},
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1},
+      {areas: [['#a-block', '#a-block-end']], selector: '#tab-a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
+      {areas: [['#b-block', '#b-block-end']], selector: '#tab-b', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "orange"},
+      {areas: [['#c-block', '#c-block-end']], selector: '#tab-c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
+      {areas: [['#d-block', '#d-block-end']], selector: '#tab-d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
+      {areas: [['#e-block', '#e-block-end']], selector: '#tab-e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
+      {areas: [['#f-block', '#f-block-end']], selector: '#bottom-watermark', offsetExtra: 40.1, callback: changeBgColor, callback: displayButton, peekaboo: true},
+      {areas: [['#wrapper', "#right-watermark"]], selector: '#right-watermark', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
     var visibility = new Visibility(arrObjs);
     visibility.start();
-    visibility.event("click", c=>!!c.selector && c.selector!=="#f" && c.selector!=="#g", scrollTo);
+    visibility.event("click", c=>c.selector !== "#tab-left-arrow" && c.selector !== "#tab-right-arrow" && c.selector !== "#right-watermark" && c.selector !== "#bottom-watermark", scrollTo);
+    visibility.event("click", c=>c.selector == "#tab-left-arrow" || c.selector == "#tab-right-arrow", scrollToLeft);
   })
 </script>
 </html>
