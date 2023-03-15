@@ -1,6 +1,6 @@
 /*
  * ========================================================================
- * Visibility 1.0.3
+ * Visibility 1.1.3
  * The target was hidden or shown when window scroll to the specified area
  * YILING CHEN
  * Copyright 2023, MIT License

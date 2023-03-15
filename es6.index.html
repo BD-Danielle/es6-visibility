@@ -91,11 +91,11 @@
     <div class="tab">
       <div class="left arrow"><a id="tab-left-arrow" href="">&#60;</a></div>
       <ul id="tab-slider">
-        <li style="background-color: red;"><a id="tab-a" href="">A標籤</a></li>
-        <li><a id="tab-b" href="">B標籤</a></li>
-        <li><a id="tab-c" href="">C標籤</a></li>
-        <li><a id="tab-d" href="">D標籤</a></li>
-        <li><a id="tab-e" href="">E標籤</a></li>
+        <li id="tab-a" class="active" style="background-color: red;"><a href="">A標籤</a></li>
+        <li id="tab-b"><a href="">B標籤</a></li>
+        <li id="tab-c"><a href="">C標籤</a></li>
+        <li id="tab-d"><a href="">D標籤</a></li>
+        <li id="tab-e"><a href="">E標籤</a></li>
       </ul>
       <div class="right arrow"><a id="tab-right-arrow" href="">&#62;</a></div>
     </div>
@@ -164,14 +164,26 @@
       this.visible ? this.qSelector.style.backgroundColor = this.backgroundColor: this.qSelector.style.backgroundColor = "grey";
     }
     var scrollTo = function(self){
+      self.children = [...self.qSelector.parentElement.children]; // HTMLCollection(5) to NodeList(5)
+      self.children.forEach(c=>c.classList.remove("active"))
+      self.qSelector.classList.add("active");
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
     var scrollToLeft = function(self){
-      console.log('self: ', self);
+      self.children = document.querySelectorAll(self.selectors);
+      self.children.forEach((c, i)=>{if(c.classList.contains("active")){self.index = i;}});
+      if(self.right && self.index >= 0){
+        self.index >= self.selectors.length - 1 ? self.index = 0: self.index++;
+        console.log('++: ', self.index);
+      }else{
+        self.index <= 0 ? self.index = self.selectors.length - 1 : self.index--;
+        console.log('--: ', self.index);
+      }
+      document.querySelector(self.selectors[self.index]).click();
     }
     var arrObjs = [
-      {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1},
-      {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1},
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: true, index: 0},
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: false, index: 0},
       {areas: [['#a-block', '#a-block-end']], selector: '#tab-a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
       {areas: [['#b-block', '#b-block-end']], selector: '#tab-b', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "orange"},
       {areas: [['#c-block', '#c-block-end']], selector: '#tab-c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
