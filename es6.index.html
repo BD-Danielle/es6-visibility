@@ -169,7 +169,9 @@
       self.qSelector.classList.add("active");
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
-    var scrollToLeft = function(self){
+    var scrollToLeft = function(self, innerThis){
+      const gdr = innerThis.getDOMRect(self.slider);
+      self.liWidth = gdr.width / self.columns;
       self.children = document.querySelectorAll(self.selectors);
       self.children.forEach((c, i)=>{if(c.classList.contains("active")){self.index = i;}});
       if(self.right && self.index >= 0){
@@ -180,10 +182,11 @@
         console.log('--: ', self.index);
       }
       document.querySelector(self.selectors[self.index]).click();
+      document.querySelector(self.slider).scrollLeft = self.liWidth * self.index;
     }
     var arrObjs = [
-      {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: true, index: 0},
-      {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: false, index: 0},
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: true, slider: "#tab-slider", columns: 3},
+      {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: false, slider: "#tab-slider", columns: 3},
       {areas: [['#a-block', '#a-block-end']], selector: '#tab-a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
       {areas: [['#b-block', '#b-block-end']], selector: '#tab-b', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "orange"},
       {areas: [['#c-block', '#c-block-end']], selector: '#tab-c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
@@ -192,7 +195,7 @@
       {areas: [['#f-block', '#f-block-end']], selector: '#bottom-watermark', offsetExtra: 40.1, callback: changeBgColor, callback: displayButton, peekaboo: true},
       {areas: [['#wrapper', "#right-watermark"]], selector: '#right-watermark', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
-    var visibility = new Visibility(arrObjs);
+    var visibility = new Visibility("cm785", arrObjs);
     visibility.start();
     visibility.event("click", c=>c.selector !== "#tab-left-arrow" && c.selector !== "#tab-right-arrow" && c.selector !== "#right-watermark" && c.selector !== "#bottom-watermark", scrollTo);
     visibility.event("click", c=>c.selector == "#tab-left-arrow" || c.selector == "#tab-right-arrow", scrollToLeft);

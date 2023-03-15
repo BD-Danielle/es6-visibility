@@ -1,6 +1,6 @@
 /*
  * ========================================================================
- * Visibility 1.1.3
+ * Visibility 1.2.3
  * The target was hidden or shown when window scroll to the specified area
  * YILING CHEN
  * Copyright 2023, MIT License
@@ -8,11 +8,11 @@
  * see README.md
  * ========================================================================
  */
-var viewSelf;
+var viewSelf = {};
 
 class Visibility{
-  constructor(arrObjs){
-    viewSelf = this;
+  constructor(id, arrObjs){
+    viewSelf[id] = this;
     this.arrObjs = arrObjs;
   }
   
@@ -58,6 +58,13 @@ class Visibility{
       "offsetWidth": offsetWidth
     };
   }
+  getDOMRect(node){
+    if(!node) return;
+    var node = document.querySelector(node);
+    let {top, right, bottom, left, width, height, x, y} = node.getBoundingClientRect()
+    return {top, right, bottom, left, width, height, x, y};
+    
+  }
   isHorizontal(c1){
     return this.winSize.innerWidth <= (this.winSize.innerWidth - this.getObjSize(c1[0]).offsetLeft + this.getObjSize(c1[1]).offsetWidth);
   }
@@ -95,9 +102,9 @@ class Visibility{
     if(Object.prototype.toString.call(this.arrObjs) !== "[object Array]") return;
     setTimeout(()=>{
       this.arrObjs.filter(condition).forEach(c1=>{
-        c1.qSelector && c1.qSelector.addEventListener(listener, function(event){
+        c1.qSelector && c1.qSelector.addEventListener(listener,(event)=>{
           event.preventDefault();
-          callback && callback.call(null, c1);
+          callback && callback.call(null, c1, this);
         })
       })
     }, 100)
