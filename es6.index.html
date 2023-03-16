@@ -170,8 +170,8 @@
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
     var scrollToLeft = function(self, innerThis){
-      const gdr = innerThis.getDOMRect(self.slider);
-      self.liWidth = gdr.width / self.columns;
+      self.liWidth = innerThis.getDOMRect(self.slider).width / self.columns;
+      self.btnWidth = innerThis.getDOMRect(self.selector).width;
       self.children = document.querySelectorAll(self.selectors);
       self.children.forEach((c, i)=>{if(c.classList.contains("active")){self.index = i;}});
       if(self.right && self.index >= 0){
@@ -182,7 +182,7 @@
         console.log('--: ', self.index);
       }
       document.querySelector(self.selectors[self.index]).click();
-      document.querySelector(self.slider).scrollLeft = self.liWidth * self.index;
+      document.querySelector(self.slider).scrollLeft = self.liWidth * self.index - self.liWidth / 2 - self.btnWidth * 2;
     }
     var arrObjs = [
       {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: true, slider: "#tab-slider", columns: 3},
