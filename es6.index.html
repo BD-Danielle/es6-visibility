@@ -155,39 +155,46 @@
 </body>
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
-    var displayButton = function(){
+    const displayButton = function(){
       this.visible ? this.qSelector.style.display = "flex": this.qSelector.style.display = "none";
     }
-    var toggleWatermark = function(){
+    const toggleWatermark = function(){
       this.horizVisible ? this.qSelector.style.visibility = "visible": this.qSelector.style.visibility = "hidden";
     }
-    var changeBgColor = function(){
+    const changeBgColor = function(){
       this.visible ? this.qSelector.style.backgroundColor = this.backgroundColor: this.qSelector.style.backgroundColor = "grey";
     }
-    var scrollTo = function(self){
+    const scrollY = function(self){
       self.children = [...self.qSelector.parentElement.children]; // HTMLCollection(5) to NodeList(5)
       self.children.forEach(c=>c.classList.remove("active"))
       self.qSelector.classList.add("active");
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
-    var scrollToLeft = function(self, innerThis){
-      self.liWidth = innerThis.getDOMRect(self.slider).width / self.columns;
-      self.btnWidth = innerThis.getDOMRect(self.selector).width;
-      self.children = document.querySelectorAll(self.selectors);
-      self.children.forEach((c, i)=>{
-        if(c.classList.contains("active")){self.index = i;}
+    const scrollX = function(self, innerThis) {
+      const liWidth = innerThis.getDOMRect(self.slider).width / self.columns;
+      const btnWidth = innerThis.getDOMRect(self.selector).width;
+      const children = document.querySelectorAll(self.selectors);
+      
+      let currentIndex = -1;
+      children.forEach((child, index) => {
+        if (child.classList.contains("active")) {
+          currentIndex = index;
+        }
       });
-      if(self.right && self.index >= 0){
-        self.index >= self.selectors.length - 1 ? self.index = 0: self.index++;
-        console.log('++: ', self.index);
-      }else{
-        self.index <= 0 ? self.index = self.selectors.length - 1 : self.index--;
-        console.log('--: ', self.index);
+    
+      if (self.right && currentIndex >= 0) {
+        currentIndex >= self.selectors.length - 1 ? currentIndex = 0 : currentIndex++;
+        console.log('++: ', currentIndex);
+      } else {
+        currentIndex <= 0 ? currentIndex = self.selectors.length - 1 : currentIndex--;
+        console.log('--: ', currentIndex);
       }
-      document.querySelector(self.selectors[self.index]).click();
-      document.querySelector(self.slider).scrollLeft = self.liWidth * self.index - self.liWidth / 2 - self.btnWidth * 2;
-    }
-    var arrObjs = [
+    
+      document.querySelector(self.selectors[currentIndex]).click();
+      document.querySelector(self.slider).scrollLeft = liWidth * currentIndex - liWidth / 2 - btnWidth * 2;
+    };
+    
+    const arrObjs = [
       {areas: [['#a-block', '#f-block-end']], selector: '#tab-right-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: true, slider: "#tab-slider", columns: 3},
       {areas: [['#a-block', '#f-block-end']], selector: '#tab-left-arrow', offsetExtra: 40.1, selectors: ["#tab-a", "#tab-b", "#tab-c", "#tab-d", "#tab-e"], right: false, slider: "#tab-slider", columns: 3},
       {areas: [['#a-block', '#a-block-end']], selector: '#tab-a', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "red"},
@@ -195,13 +202,13 @@
       {areas: [['#c-block', '#c-block-end']], selector: '#tab-c', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "yellow"},
       {areas: [['#d-block', '#d-block-end']], selector: '#tab-d', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "green"},
       {areas: [['#e-block', '#e-block-end']], selector: '#tab-e', offsetExtra: 40.1, callback: changeBgColor, backgroundColor: "blue"},
-      {areas: [['#f-block', '#f-block-end']], selector: '#bottom-watermark', offsetExtra: 40.1, callback: changeBgColor, callback: displayButton, peekaboo: true},
+      {areas: [['#f-block', '#f-block-end']], selector: '#bottom-watermark', offsetExtra: 40.1, callback: displayButton, peekaboo: true},
       {areas: [['#wrapper', "#right-watermark"]], selector: '#right-watermark', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
-    var visibility = new Visibility("cm785", arrObjs);
+    const visibility = new Visibility("cm785", arrObjs);
     visibility.start();
-    visibility.event("click", c=>c.selector !== "#tab-left-arrow" && c.selector !== "#tab-right-arrow" && c.selector !== "#right-watermark" && c.selector !== "#bottom-watermark", scrollTo);
-    visibility.event("click", c=>c.selector == "#tab-left-arrow" || c.selector == "#tab-right-arrow", scrollToLeft);
+    visibility.event("click", c=>c.selector !== "#tab-left-arrow" && c.selector !== "#tab-right-arrow" && c.selector !== "#right-watermark" && c.selector !== "#bottom-watermark", scrollY);
+    visibility.event("click", c=>c.selector == "#tab-left-arrow" || c.selector == "#tab-right-arrow", scrollX);
   })
 </script>
 </html>
