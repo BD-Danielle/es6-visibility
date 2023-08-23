@@ -42,15 +42,14 @@ class Visibility{
     );
 
     const docScrollTop = docElement.scrollTop || document.scrollingElement.scrollTop;
-    const docScrollBottom = docHeight - docScrollTop - window.innerHeight;
+    const docScrollBottom = docHeight - docScrollTop;
 
     return {
-      docHeight: docHeight,
-      docScrollTop: docScrollTop,
-      docScrollBottom: docScrollBottom
+      docHeight,
+      docScrollTop ,
+      docScrollBottom
     };
   }
-  
   getObjSize(str) {
     if (!str) return;
   
@@ -81,9 +80,9 @@ class Visibility{
 
   getDOMRect(str) {
     if (!str) return;
-    const targetNode = document.querySelector(str);
-    if (!targetNode) return;
-    const {top, right, bottom, left, width, height, x, y} = targetNode.getBoundingClientRect();
+    const node = document.querySelector(str);
+    if (!node) return;
+    const {top, right, bottom, left, width, height, x, y} = node.getBoundingClientRect();
     return {top, right, bottom, left, width, height, x, y};
   }
 
@@ -136,9 +135,10 @@ class Visibility{
   
   forEachObj() {
     this.arrObjs.forEach(obj => {
-      updateVisibility.call(this, obj);
+      this.updateVisibility(obj);
     });
   };
+  
   start(){
     ["DOMContentLoaded", "scroll", "resize"].forEach(c=>window.addEventListener(c, ()=>this.forEachObj()));
   }
