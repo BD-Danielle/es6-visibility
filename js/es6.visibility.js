@@ -18,85 +18,129 @@ class Visibility{
   
   get scrSize(){// Return the detailed size of user screen
     return {
-      "width": screen.width || screen.availWidth, 
-      "height": screen.height || screen.availHeight
+      width: screen.width || screen.availWidth, 
+      height: screen.height || screen.availHeight
     };
   }
 
   get winSize(){// Return the detailed size of user window
     return {
-      "innerWidth": window.innerWidth,    // width without scrollbar-x
-      "innerHeight": window.innerHeight,  // height without scrollbar-y
-      "outerWidth": window.outerWidth,    // width with scrollbar-x
-      "outerHeight": window.outerHeight   // height without scrollbar-y
+      innerWidth: window.innerWidth,    // width without scrollbar-x
+      innerHeight: window.innerHeight,  // height without scrollbar-y
+      outerWidth: window.outerWidth,    // width with scrollbar-x
+      outerHeight: window.outerHeight   // height without scrollbar-y
     };
   }
 
   get docSize(){// Return the detailed size of user document
+    const docElement = document.documentElement;
+    const docBody = document.body;
+    
+    const docHeight = Math.max(
+      docBody.scrollHeight || docBody.clientHeight,
+      docElement.scrollHeight || docElement.clientHeight
+    );
+
+    const docScrollTop = docElement.scrollTop || document.scrollingElement.scrollTop;
+    const docScrollBottom = docHeight - docScrollTop - window.innerHeight;
+
     return {
-      "docHeight": document.body.scrollHeight || document.body.clientHeight || document.documentElement.scrollHeight || document.documentElement.offsetHeight,
-      "docScrollTop": document.documentElement.scrollTop || document.scrollingElement.scrollTop, // docLoadedHeight
-      "docScrollBottom": (document.body.scrollHeight || document.body.clientHeight || document.documentElement.scrollHeight || document.documentElement.offsetHeight) 
-      - (document.documentElement.scrollTop || document.scrollingElement.scrollTop) // docUnloadedHeight
+      docHeight: docHeight,
+      docScrollTop: docScrollTop,
+      docScrollBottom: docScrollBottom
     };
   }
   
-  getObjSize(node){
-    if(!node) return;
-    let offsetLeft = 0, offsetTop = 0;
-    var node = document.querySelector(node);
-    let offsetHeight = node.offsetHeight, offsetWidth = node.offsetWidth;
-    while(node){ // if null return
-      offsetLeft += node.offsetLeft;
-      offsetTop += node.offsetTop;
-      node = node.offsetParent;
+  getObjSize(str) {
+    if (!str) return;
+  
+    const node = document.querySelector(str);
+  
+    if (!node) return;
+  
+    let offsetLeft = 0;
+    let offsetTop = 0;
+    let currentNode = node;
+  
+    while (currentNode) {
+      offsetLeft += currentNode.offsetLeft;
+      offsetTop += currentNode.offsetTop;
+      currentNode = currentNode.offsetParent;
     }
+  
+    const offsetHeight = node.offsetHeight;
+    const offsetWidth = node.offsetWidth;
+  
     return {
-      "offsetLeft": offsetLeft, 
-      "offsetTop": offsetTop,
-      "offsetHeight": offsetHeight,
-      "offsetWidth": offsetWidth
+      offsetLeft,
+      offsetTop,
+      offsetHeight,
+      offsetWidth
     };
-  }
-  getDOMRect(node){
-    if(!node) return;
-    var node = document.querySelector(node);
-    let {top, right, bottom, left, width, height, x, y} = node.getBoundingClientRect()
+  };
+
+  getDOMRect(str) {
+    if (!str) return;
+    const targetNode = document.querySelector(str);
+    if (!targetNode) return;
+    const {top, right, bottom, left, width, height, x, y} = targetNode.getBoundingClientRect();
     return {top, right, bottom, left, width, height, x, y};
+  }
+
+  isHorizontal(elementRange) {
+    const leftElementSize = this.getObjSize(elementRange[0]);
+    const rightElementSize = this.getObjSize(elementRange[1]);
+    const availableWidth = this.winSize.innerWidth - leftElementSize.offsetLeft + rightElementSize.offsetWidth;
+  
+    return this.winSize.innerWidth <= availableWidth;
+  }
+
+  isVertical(elementRange, offsetParent, offsetExtra, peekaboo) {
+    const offsetTop = offsetParent ? this.getObjSize(offsetParent).offsetHeight + (offsetExtra ? offsetExtra : 0) : 0;
+    const pointA = this.getObjSize(elementRange[0]).offsetTop - offsetTop;
+    const pointB = this.docSize.docHeight - this.getObjSize(elementRange[1]).offsetTop + offsetTop - this.getObjSize(elementRange[1]).offsetHeight;
     
+    const isAbovePointA = this.docSize.docScrollTop + (peekaboo ? offsetExtra : 0) >= pointA;
+    const isBelowPointB = pointB <= (peekaboo ? this.docSize.docScrollBottom - this.winSize.innerHeight : this.docSize.docScrollBottom);
+    
+    return isAbovePointA && isBelowPointB;
   }
-  isHorizontal(c1){
-    return this.winSize.innerWidth <= (this.winSize.innerWidth - this.getObjSize(c1[0]).offsetLeft + this.getObjSize(c1[1]).offsetWidth);
-  }
-  isVertical(c1, c, offsetExtra, peekaboo){
-    let offsetTop = c ? this.getObjSize(c).offsetHeight + offsetExtra ? offsetExtra: 0: 0;
-    let pointA = this.getObjSize(c1[0]).offsetTop - offsetTop;
-    let pointB = this.docSize.docHeight - this.getObjSize(c1[1]).offsetTop + offsetTop - this.getObjSize(c1[1]).offsetHeight;
-    return this.docSize.docScrollTop + (peekaboo ? offsetExtra: 0) >= pointA && pointB <= (peekaboo ? this.docSize.docScrollBottom - this.winSize.innerHeight: this.docSize.docScrollBottom);
-  }
-  forEach(){
-    this.arrObjs.forEach(c=>{
-      c.arrVisible = [];
-      c.qSelector = document.querySelector(c.selector);
-      c.visible = false;
-      c.offsetTop = this.getObjSize(c.areas[0][0]).offsetTop;
-      c.areas.forEach((c1, i1)=>{
-        c.horizVisible = c.horizontal && this.isHorizontal(c1) ? false: true; // if horizontal
-        if(this.isVertical(c1, c.selector, c.offsetExtra, c.peekaboo)){
-          c.arrVisible[i1] = true;
-          c.visible = true;
-        }else{
-          c.arrVisible[i1] = false;
-          c.visible = false;
-        }
-      })
-      if (c.areas.length >= c.arrVisible.length && c.arrVisible.some(c2=>c2==true)) c.visible = true;
-      if (c.areas.length >= c.arrVisible.length && c.arrVisible.every(c2=>c2==false)) c.visible = false;
-      c.callback && c.callback();
-    })
-  }
+
+  updateVisibility(obj) {
+    obj.arrVisible = [];
+    obj.qSelector = document.querySelector(obj.selector);
+    obj.visible = false;
+    obj.offsetTop = this.getObjSize(obj.areas[0][0]).offsetTop;
+  
+    obj.areas.forEach((area, index) => {
+      obj.horizVisible = obj.horizontal && this.isHorizontal(area) ? false : true;
+      if (this.isVertical(area, obj.selector, obj.offsetExtra, obj.peekaboo)) {
+        obj.arrVisible[index] = true;
+        obj.visible = true;
+      } else {
+        obj.arrVisible[index] = false;
+        obj.visible = false;
+      }
+    });
+  
+    if (obj.areas.length >= obj.arrVisible.length && obj.arrVisible.some(visible => visible == true)) {
+      obj.visible = true;
+    }
+    
+    if (obj.areas.length >= obj.arrVisible.length && obj.arrVisible.every(visible => visible == false)) {
+      obj.visible = false;
+    }
+    
+    obj.callback && obj.callback();
+  };
+  
+  forEachObj() {
+    this.arrObjs.forEach(obj => {
+      updateVisibility.call(this, obj);
+    });
+  };
   start(){
-    ["DOMContentLoaded", "scroll", "resize"].forEach(c=>window.addEventListener(c, ()=>this.forEach()));
+    ["DOMContentLoaded", "scroll", "resize"].forEach(c=>window.addEventListener(c, ()=>this.forEachObj()));
   }
   event(listener, condition, callback){
     if(Object.prototype.toString.call(this.arrObjs) !== "[object Array]") return;
@@ -110,3 +154,5 @@ class Visibility{
     }, 100)
   }
 }
+window.viewSelf = viewSelf;
+window.Visibility = Visibility;
