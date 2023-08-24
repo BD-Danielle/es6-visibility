@@ -1,6 +1,6 @@
 /*
  * ========================================================================
- * Visibility 1.2.3
+ * Visibility 1.3.1
  * The target was hidden or shown when window scroll to the specified area
  * YILING CHEN
  * Copyright 2023, MIT License
@@ -50,10 +50,16 @@ class Visibility{
       docScrollBottom
     };
   }
+  q(str){
+    const elements = document.querySelectorAll(str);
+    if (elements.length === 1) {
+      return elements[0];
+    }
+    return Array.from(elements);
+  }
   getObjSize(str) {
     if (!str) return;
-  
-    const node = document.querySelector(str);
+    const node = this.q(str);
   
     if (!node) return;
   
@@ -77,15 +83,13 @@ class Visibility{
       offsetWidth
     };
   };
-
   getDOMRect(str) {
     if (!str) return;
-    const node = document.querySelector(str);
+    const node = this.q(str);
     if (!node) return;
     const {top, right, bottom, left, width, height, x, y} = node.getBoundingClientRect();
     return {top, right, bottom, left, width, height, x, y};
   }
-
   isHorizontal(elementRange) {
     const leftElementSize = this.getObjSize(elementRange[0]);
     const rightElementSize = this.getObjSize(elementRange[1]);
@@ -93,7 +97,6 @@ class Visibility{
   
     return this.winSize.innerWidth <= availableWidth;
   }
-
   isVertical(elementRange, offsetParent, offsetExtra, peekaboo) {
     const offsetTop = offsetParent ? this.getObjSize(offsetParent).offsetHeight + (offsetExtra ? offsetExtra : 0) : 0;
     const pointA = this.getObjSize(elementRange[0]).offsetTop - offsetTop;
@@ -104,10 +107,9 @@ class Visibility{
     
     return isAbovePointA && isBelowPointB;
   }
-
   updateVisibility(obj) {
     obj.arrVisible = [];
-    obj.qSelector = document.querySelector(obj.selector);
+    obj.qSelector = this.q(obj.selector);
     obj.visible = false;
     obj.offsetTop = this.getObjSize(obj.areas[0][0]).offsetTop;
   
@@ -138,7 +140,6 @@ class Visibility{
       this.updateVisibility(obj);
     });
   };
-  
   start(){
     ["DOMContentLoaded", "scroll", "resize"].forEach(c=>window.addEventListener(c, ()=>this.forEachObj()));
   }
