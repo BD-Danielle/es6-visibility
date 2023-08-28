@@ -6,8 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="./css/reset.css">
-  <script src="./js/webpack/es6.visibility.bundle.js"></script>
-  <!-- <script src="./js/es6.visibility.js"></script> -->
+  <script src="./js/ai/ai.es6.visibility.bundle.js"></script>
   <title>es6.Visibility</title>
 </head>
 <style>
@@ -172,6 +171,7 @@
       self.children.forEach(c=>c.classList.remove("active"))
       self.qSelector.classList.add("active");
       if(self.qSelector.classList.contains("tab")) return;
+      console.log('self.offsetTop: ', self.offsetTop);
       window.scrollTo(0, self.offsetTop - self.offsetExtra);
     }
     const scrollX = function(self, innerThis) {
@@ -227,7 +227,7 @@
       {areas: [['#wrapper', "#right-watermark"]], selector: '#right-watermark', offsetExtra: 40.1, callback: toggleWatermark, horizontal: true}
     ];
     const visibility = new Visibility("cm785", arrObjs);
-    visibility.start();
+    //visibility.start();
     visibility.event("click", c=>c.selector !== "#tab-left-arrow" && c.selector !== "#tab-right-arrow" && c.selector !== "#right-watermark" && c.selector !== "#bottom-watermark", scrollY);
     visibility.event("click", c=>c.selector == "#tab-left-arrow" || c.selector == "#tab-right-arrow", scrollX);
   })
